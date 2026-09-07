@@ -133,7 +133,7 @@ export default function AnalyticsTracker() {
     }, { threshold: 0.3 }); // Lower threshold for taller sections
 
     // Delay observer start slightly to ensure page load
-    setTimeout(() => {
+    const observerTimeout = setTimeout(() => {
       const sections = document.querySelectorAll('section[id]');
       sections.forEach(section => observer.observe(section));
     }, 1500);
@@ -216,13 +216,13 @@ export default function AnalyticsTracker() {
           body: JSON.stringify({
             path: pathname,
             type: 'ping'
-          }),
-          keepalive: true
+          })
         }).catch(() => {});
       }
     }, 15000);
 
     return () => {
+      clearTimeout(observerTimeout);
       if (trackTimer.current) clearTimeout(trackTimer.current);
       if (pingInterval.current) clearInterval(pingInterval.current);
       window.removeEventListener('scroll', handleScroll);

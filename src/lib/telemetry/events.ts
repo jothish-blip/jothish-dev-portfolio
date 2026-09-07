@@ -84,8 +84,6 @@ export const trackEvent = async ({
         event_name: type,
         event_data: metadata,
       }),
-      // Use keepalive for reliability during unloads
-      keepalive: true,
     });
   } catch (error) {
     // Silently fail telemetry in production to avoid affecting user experience

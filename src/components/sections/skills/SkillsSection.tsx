@@ -162,7 +162,7 @@ export default function SkillsSection() {
 
         {skillDomains.length > INITIAL_DOMAINS_MOBILE && (
           <div className="mt-6 flex justify-center">
-            <button
+            <button suppressHydrationWarning
               onClick={() => setShowAllMobile(!showAllMobile)}
               className="view-more-skills px-6 py-3 border border-surface bg-surface/10 rounded-sm text-[10px] font-mono uppercase tracking-[0.24em] text-muted transition-all duration-300"
             >
@@ -183,7 +183,7 @@ export default function SkillsSection() {
           {/* 7. Search Bar */}
           <div className="relative mb-6">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-            <input 
+            <input suppressHydrationWarning 
               type="text" 
               placeholder="Search skills..."
               value={searchQuery}
@@ -201,7 +201,7 @@ export default function SkillsSection() {
               const isActive = activeDomainId === domain.id;
               
               return (
-                <button
+                <button suppressHydrationWarning
                   key={domain.id}
                   onClick={() => setActiveDomainId(domain.id)}
                   onMouseEnter={() => setHoveredDomainId(domain.id)}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { trackEvent, TELEMETRY_EVENTS } from "@/lib/telemetry/events";
 
@@ -9,6 +10,7 @@ const sections = ["about", "projects", "skills", "terminal", "contact"];
 
 // Using CSS variables to handle light/dark contrast safely
 const sectionConfig: Record<string, { cssVar: string; label: string }> = {
+  home: { cssVar: "var(--accent-hero)", label: "Home Base" },
   about: { cssVar: "var(--accent-about)", label: "Profile Overview" },
   projects: { cssVar: "var(--accent-projects)", label: "Case Files" },
   skills: { cssVar: "var(--accent-skills)", label: "Tech Arsenal" },
@@ -17,9 +19,13 @@ const sectionConfig: Record<string, { cssVar: string; label: string }> = {
 };
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const initialSection = (pathname || "").split("/").filter(Boolean)[0];
+  const isValidSection = sections.includes(initialSection);
+
   // Scroll Logic: Consolidated State for fewer re-renders
   const [navState, setNavState] = useState({
-    active: "",
+    active: isValidSection ? initialSection : "",
     scrolled: false,
     hidden: false,
     progress: 0,
@@ -108,7 +114,7 @@ export default function Navbar() {
 
         // Progress Calc
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const newProgress = height > 0 ? (currentScroll / height) * 100 : 0;
+        const newProgress = height > 0 ? Math.round((currentScroll / height) * 100) : 0;
 
         // Hide/Show Logic
         let newScrolled = false;
@@ -122,33 +128,18 @@ export default function Navbar() {
 
         lastScrollY.current = currentScroll;
 
-        // Section Detection
-        const offset = window.innerHeight * 0.25;
-        const scrollPos = currentScroll + offset;
-        let newActive = "";
-
-        for (const section of sections) {
-          const el = document.getElementById(section);
-          if (el && scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight) {
-            newActive = section;
-            break;
-          }
-        }
-        if (currentScroll < 100) newActive = "";
-
         // Single State Update
         setNavState((prev) => {
           if (
             prev.progress !== newProgress ||
             prev.scrolled !== newScrolled ||
-            prev.hidden !== newHidden ||
-            prev.active !== newActive
+            prev.hidden !== newHidden
           ) {
             return {
+              ...prev,
               progress: newProgress,
               scrolled: newScrolled,
               hidden: newHidden,
-              active: newActive,
             };
           }
           return prev;
@@ -164,6 +155,69 @@ export default function Navbar() {
       if (scrollTimeout.current) cancelAnimationFrame(scrollTimeout.current);
     };
   }, []);
+
+  // IntersectionObserver for Section Detection
+  useEffect(() => {
+    const sectionIds = ["hero", "about", "projects", "skills", "terminal", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const activeId = entry.target.id;
+            const routeSlug = activeId === "hero" ? "home" : activeId;
+            setNavState((prev) => {
+              if (prev.active !== routeSlug) {
+                return { ...prev, active: routeSlug };
+              }
+              return prev;
+            });
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "-25% 0px -50% 0px", // Detect section when it takes up the middle of the screen
+        threshold: 0,
+      }
+    );
+
+    // Observe sections immediately
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Update URL based on active section
+  useEffect(() => {
+    const titles: Record<string, string> = {
+      about: "About | Jothish Gandham",
+      projects: "Projects | Jothish Gandham",
+      skills: "Skills | Jothish Gandham",
+      terminal: "Terminal | Jothish Gandham",
+      contact: "Contact | Jothish Gandham",
+      home: "Home | Jothish Gandham",
+    };
+
+    if (active) {
+      const url = `/${active}`;
+      const currentPath = window.location.pathname.replace(/\/$/, "");
+      if (currentPath !== url) {
+        window.history.replaceState(null, "", url);
+        document.title = titles[active] || "Jothish Gandham";
+      }
+    } else if (window.scrollY < 100) {
+      const currentPath = window.location.pathname.replace(/\/$/, "");
+      if (currentPath !== "/home" && currentPath !== "") {
+        window.history.replaceState(null, "", "/home");
+        document.title = titles.home;
+      }
+    }
+  }, [active]);
 
   // Keyboard Navigation
   useEffect(() => {
@@ -207,7 +261,7 @@ export default function Navbar() {
     }
   };
 
-  const activeColorVar = active ? sectionConfig[active].cssVar : "var(--accent-hero)";
+  const activeColorVar = active && sectionConfig[active] ? sectionConfig[active].cssVar : "var(--accent-hero)";
 
   return (
     <>
@@ -357,7 +411,7 @@ export default function Navbar() {
 
           {/* RIGHT ACTIONS: Resume & Theme Toggle Grouped */}
           <div className="flex items-center gap-3 relative z-[101]">
-            <button
+            <button suppressHydrationWarning
               onClick={() => {
                 if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(10);
                 setShowResumeOptions(true);
@@ -379,7 +433,7 @@ export default function Navbar() {
               Resume
             </button>
 
-            <button
+            <button suppressHydrationWarning
               type="button"
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
@@ -400,7 +454,7 @@ export default function Navbar() {
               )}
             </button>
 
-            <button
+            <button suppressHydrationWarning
               className={`md:hidden flex items-center justify-center p-2.5 group bg-background rounded-sm border transition-all duration-300 ease-out focus:outline-none focus:ring-1 focus:ring-cyan-500/30 ${
                 menuOpen ? "opacity-0 pointer-events-none" : "opacity-100 active:scale-95"
               }`}
@@ -438,7 +492,7 @@ export default function Navbar() {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
         >
-          <button
+          <button suppressHydrationWarning
             onClick={() => setMenuOpen(false)}
             className="absolute top-4 right-4 p-2.5 bg-surface/30 border border-surface rounded-md text-foreground hover:bg-surface transition-all active:scale-95 focus:outline-none z-[115]"
             aria-label="Close Menu"
@@ -486,7 +540,7 @@ export default function Navbar() {
 
               <div className="w-full h-px bg-surface my-1" />
 
-              <button
+              <button suppressHydrationWarning
                 onClick={() => {
                   if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(10);
                   setMenuOpen(false);
@@ -542,7 +596,7 @@ export default function Navbar() {
               Download Resume (PDF)
             </a>
 
-            <button
+            <button suppressHydrationWarning
               onClick={() => setShowResumeOptions(false)}
               className="text-[9px] font-mono tracking-[0.24em] text-muted hover:text-foreground uppercase w-full mt-4 transition-colors pt-2"
             >

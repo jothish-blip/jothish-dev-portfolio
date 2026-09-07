@@ -276,7 +276,7 @@ export default function Projects() {
 
           {/* HUD NAVIGATION (Controls & Indicator) */}
           <div className="max-w-[720px] mx-auto mt-8 px-6 flex items-center justify-between">
-            <button 
+            <button suppressHydrationWarning 
               onClick={prev}
               disabled={currentIndex === 0}
               className="p-3 border border-surface rounded-full text-foreground bg-background hover:bg-surface/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
@@ -294,7 +294,7 @@ export default function Projects() {
               </span>
             </div>
 
-            <button 
+            <button suppressHydrationWarning 
               onClick={next}
               disabled={currentIndex === projects.length - 1}
               className="p-3 border border-surface rounded-full text-foreground bg-background hover:bg-surface/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"

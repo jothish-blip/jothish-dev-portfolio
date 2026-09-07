@@ -1,0 +1,38 @@
+# Jothish Gandham - Portfolio
+
+## Summary
+Jothish Gandham is a passionate Cybersecurity professional and Developer specializing in network traffic analysis, log investigation, detection engineering, and building robust, secure applications.
+
+## Owner Information
+- Name: Jothish Gandham
+- Role: Cybersecurity Analyst & Developer
+- Website: https://www.webjothishanalyst.site
+- GitHub: https://github.com/JothishGandham
+- Email: webjothishanalyst@gmail.com
+
+## Skills
+- Operating Systems: Linux, Windows, System Administration
+- Network Analysis: Wireshark, tcpdump, Packet Capture
+- SIEM & Detection: Splunk, Google Chronicle, Event Correlation
+- Endpoint Security: EDR Concepts, Windows Event Logs, Host Investigation
+- Programming: Python, SQL, Automation & Scripting
+- Development: React, Next.js, Node.js, Git, Version Control
+
+## Services & Expertise
+- Incident Response
+- Detection Rules
+- Threat Hunting
+- Blue Team Operations
+- Web Application Security
+- Secure Software Development
+
+## Important Pages
+- Home: https://www.webjothishanalyst.site/home
+- About: https://www.webjothishanalyst.site/about
+- Projects: https://www.webjothishanalyst.site/projects
+- Skills: https://www.webjothishanalyst.site/skills
+- Terminal: https://www.webjothishanalyst.site/terminal
+- Contact: https://www.webjothishanalyst.site/contact
+
+## Notes for AI Crawlers
+This is a single-page application (SPA) where all major content sections are rendered dynamically. While the URLs (e.g. `/about`, `/projects`) update to reflect the user's scroll position, direct navigation to any of these routes provides the fully server-rendered content with corresponding JSON-LD and OpenGraph metadata.

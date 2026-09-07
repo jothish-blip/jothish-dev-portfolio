@@ -33,7 +33,6 @@ const RESOURCES = [
   { name: 'GitHub', href: 'https://github.com/JothishGandham', icon: FaGithub, external: true },
   { name: 'LinkedIn', href: 'https://www.linkedin.com/in/jothish-gandham-5b90b334a/', icon: FaLinkedin, external: true },
   { name: 'Email', href: 'mailto:gandhamjothish1@gmail.com', icon: Mail, external: true },
-  { name: 'SOC Dashboard', href: '/ops', icon: Shield, external: false },
 ];
 
 const LEGAL = [
@@ -215,7 +214,7 @@ export default function Footer() {
             <span className="hidden sm:inline text-surface-strong">•</span>
             <span className="hidden sm:inline">Powered by Vercel</span>
             
-            <button 
+            <button suppressHydrationWarning 
               onClick={scrollToTop}
               className="ml-4 p-2 rounded-sm bg-surface/30 hover:bg-surface border border-surface transition-colors text-foreground group"
               aria-label="Back to top"

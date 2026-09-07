@@ -342,7 +342,7 @@ export default function Contact() {
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {intents.map((item) => (
-                          <button
+                          <button suppressHydrationWarning
                             key={item.id}
                             onClick={(e) => { 
                               e.preventDefault(); 
@@ -389,7 +389,7 @@ export default function Contact() {
                       <div className="space-y-5">
                         <div className="space-y-2 flex flex-col">
                           <label className="font-mono text-[9px] uppercase tracking-[0.24em] text-muted ml-0.5">Full Name</label>
-                          <input 
+                          <input suppressHydrationWarning 
                             type="text" name="user_name" 
                             value={formData.user_name} onChange={handleInputChange}
                             placeholder="e.g. Alex" 
@@ -398,7 +398,7 @@ export default function Contact() {
                         </div>
                         <div className="space-y-2 flex flex-col">
                           <label className="font-mono text-[9px] uppercase tracking-[0.24em] text-muted ml-0.5">Email Address</label>
-                          <input 
+                          <input suppressHydrationWarning 
                             type="email" name="user_email" 
                             pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
                             value={formData.user_email} onChange={handleInputChange}
@@ -423,7 +423,7 @@ export default function Contact() {
                       </div>
                       <div className="space-y-2 flex flex-col">
                         <label className="font-mono text-[9px] uppercase tracking-[0.24em] text-muted ml-0.5">{formContent[intent].step3Label}</label>
-                        <input 
+                        <input suppressHydrationWarning 
                           type="text" name="context_info" 
                           value={formData.context_info} onChange={handleInputChange}
                           placeholder={formContent[intent].step3Placeholder} 
@@ -486,7 +486,7 @@ export default function Contact() {
                           <p className="text-[13px] text-muted max-w-sm leading-relaxed">
                             Thank you for reaching out. I&apos;ve received your message and will get back to you within 24 hours.
                           </p>
-                          <button type="button" onClick={resetFlow} className="mt-4 px-4 py-2 border border-surface bg-surface/20 rounded-sm font-mono text-[9px] uppercase tracking-[0.24em] text-muted hover:text-foreground hover:bg-surface hover:border-surface-strong transition-all">
+                          <button suppressHydrationWarning type="button" onClick={resetFlow} className="mt-4 px-4 py-2 border border-surface bg-surface/20 rounded-sm font-mono text-[9px] uppercase tracking-[0.24em] text-muted hover:text-foreground hover:bg-surface hover:border-surface-strong transition-all">
                             Send Another Message [ESC]
                           </button>
                         </>
@@ -501,7 +501,7 @@ export default function Contact() {
                           <p className="text-[13px] text-muted max-w-sm leading-relaxed">
                             There was an error delivering your message. Please try again or use direct email.
                           </p>
-                          <button type="button" onClick={() => setStatus("idle")} className="mt-4 px-6 py-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-sm font-mono text-[9px] uppercase tracking-[0.24em] hover:bg-red-500 hover:text-white transition-all">
+                          <button suppressHydrationWarning type="button" onClick={() => setStatus("idle")} className="mt-4 px-6 py-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-sm font-mono text-[9px] uppercase tracking-[0.24em] hover:bg-red-500 hover:text-white transition-all">
                             Retry
                           </button>
                         </>
@@ -516,12 +516,12 @@ export default function Contact() {
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
                     className="mt-8 pt-5 border-t border-surface flex items-center justify-between"
                   >
-                    <button type="button" onClick={prevStep} className="px-2 py-2 -ml-2 font-mono text-[9px] uppercase tracking-[0.24em] text-muted hover:text-foreground transition-colors flex items-center gap-1.5">
+                    <button suppressHydrationWarning type="button" onClick={prevStep} className="px-2 py-2 -ml-2 font-mono text-[9px] uppercase tracking-[0.24em] text-muted hover:text-foreground transition-colors flex items-center gap-1.5">
                       ← Back
                     </button>
                     
                     {step < 4 ? (
-                      <button 
+                      <button suppressHydrationWarning 
                         type="button" 
                         onClick={nextStep} 
                         disabled={step === 2 && (!formData.user_name.trim() || !formData.user_email.trim())}
@@ -530,7 +530,7 @@ export default function Contact() {
                         Continue →
                       </button>
                     ) : (
-                      <button 
+                      <button suppressHydrationWarning 
                         type="submit" 
                         className="px-5 py-2.5 text-background font-mono text-[9px] uppercase tracking-[0.24em] rounded-sm hover:opacity-90 transition-all flex items-center gap-2"
                         style={{ 

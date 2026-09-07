@@ -87,7 +87,7 @@ export default function GlobalSearch({ isOpen, onClose }: { isOpen: boolean, onC
           >
             <div className="flex items-center px-4 py-4 border-b border-surface-strong bg-background/50">
               <Search size={18} className="text-muted mr-3" />
-              <input
+              <input suppressHydrationWarning
                 ref={inputRef}
                 type="text"
                 value={query}
@@ -96,7 +96,7 @@ export default function GlobalSearch({ isOpen, onClose }: { isOpen: boolean, onC
                 className="flex-1 bg-transparent border-none outline-none text-foreground font-mono text-sm placeholder:text-muted/50"
               />
               {loading && <Loader2 size={16} className="text-muted animate-spin mr-3" />}
-              <button onClick={onClose} className="p-1 hover:bg-surface rounded-sm text-muted hover:text-foreground transition-colors">
+              <button suppressHydrationWarning onClick={onClose} className="p-1 hover:bg-surface rounded-sm text-muted hover:text-foreground transition-colors">
                 <X size={16} />
               </button>
             </div>
@@ -116,7 +116,7 @@ export default function GlobalSearch({ isOpen, onClose }: { isOpen: boolean, onC
               ) : (
                 <div className="space-y-1">
                   {results.map((result) => (
-                    <button
+                    <button suppressHydrationWarning
                       key={`${result.type}-${result.id}`}
                       onClick={() => handleSelect(result.href)}
                       className="w-full flex items-start gap-4 p-3 hover:bg-surface/50 rounded-sm transition-colors text-left group"

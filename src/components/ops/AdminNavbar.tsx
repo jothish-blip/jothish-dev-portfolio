@@ -89,13 +89,13 @@ export default function AdminNavbar({ setSearchOpen, setMobileOpen }: { setSearc
         
         {/* Left Side: Search & System Status */}
         <div className="flex items-center gap-6">
-          <button 
+          <button suppressHydrationWarning 
             onClick={() => setMobileOpen?.(true)}
             className="md:hidden p-2 -ml-2 text-muted hover:text-foreground hover:bg-surface/30 rounded-sm transition-colors"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
           </button>
-          <button 
+          <button suppressHydrationWarning 
             onClick={() => setSearchOpen(true)}
             className="flex items-center gap-2 px-3 py-1.5 bg-surface/30 border border-surface rounded-sm text-muted hover:text-foreground hover:bg-surface/50 transition-colors"
           >
@@ -124,7 +124,7 @@ export default function AdminNavbar({ setSearchOpen, setMobileOpen }: { setSearc
           <QuickActions />
           <NotificationPanel />
 
-          <button 
+          <button suppressHydrationWarning 
             onClick={toggleTheme}
             className="p-2 text-muted hover:text-foreground transition-colors rounded-sm hover:bg-surface/30"
           >

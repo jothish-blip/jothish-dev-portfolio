@@ -343,7 +343,7 @@ export default function Terminal() {
       <div className="relative z-10 w-full flex flex-col items-center">
         {isClosed ? (
           <div className="py-16">
-            <button 
+            <button suppressHydrationWarning 
               onClick={initTerminal} 
               className="group flex items-center gap-3 px-6 py-3.5 border text-foreground font-mono text-[9px] tracking-[0.24em] uppercase bg-surface/20 hover:bg-surface active:scale-[0.98] transition-all duration-300 rounded-sm term-accent-border hover:term-glow"
             >
@@ -365,7 +365,7 @@ export default function Terminal() {
             <div className="relative flex flex-col bg-surface/30 border-b border-surface z-30 shrink-0">
               <div className="flex items-center justify-between px-4 py-3">
                 <div className="flex items-center gap-2 z-20">
-                  <button onClick={(e) => { 
+                  <button suppressHydrationWarning onClick={(e) => { 
                     e.stopPropagation(); 
                     setIsClosed(true); 
                     // Reset any active contact wizard so it doesn't bleed into the next open
@@ -375,10 +375,10 @@ export default function Terminal() {
                   }} className="w-3 h-3 rounded-full bg-red-500/80 flex items-center justify-center hover:bg-red-500 transition-colors">
                     <X size={8} className="text-white opacity-0 hover:opacity-100 transition-opacity" />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }} className="w-3 h-3 rounded-full bg-amber-500/80 flex items-center justify-center hover:bg-amber-500 transition-colors">
+                  <button suppressHydrationWarning onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }} className="w-3 h-3 rounded-full bg-amber-500/80 flex items-center justify-center hover:bg-amber-500 transition-colors">
                     <Minus size={8} className="text-white opacity-0 hover:opacity-100 transition-opacity" />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }} className="w-3 h-3 rounded-full bg-emerald-500/80 flex items-center justify-center hover:bg-emerald-500 transition-colors">
+                  <button suppressHydrationWarning onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }} className="w-3 h-3 rounded-full bg-emerald-500/80 flex items-center justify-center hover:bg-emerald-500 transition-colors">
                     <Maximize2 size={8} className="text-white opacity-0 hover:opacity-100 transition-opacity" />
                   </button>
                 </div>
@@ -392,7 +392,7 @@ export default function Terminal() {
               {/* TABS */}
               <div className={`flex gap-1 px-2 pt-1 bg-background/50 border-t border-surface overflow-x-auto ${customScrollbar}`}>
                 {tabs.map((t, i) => (
-                  <button
+                  <button suppressHydrationWarning
                     key={t.id}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -409,7 +409,7 @@ export default function Terminal() {
                     Tab {t.id}
                   </button>
                 ))}
-                <button
+                <button suppressHydrationWarning
                   onClick={(e) => {
                     e.stopPropagation();
                     setTabs([...tabs, { id: tabs.length + 1, history: [], isRoot: false }]);
@@ -475,7 +475,7 @@ export default function Terminal() {
                         <span className="text-muted">~{isRoot ? "#" : "$"}</span>
                         
                         <div className="flex items-center flex-1 bg-transparent relative ml-1">
-                          <input 
+                          <input suppressHydrationWarning 
                             ref={inputRef} 
                             value={input} 
                             onChange={(e) => {
@@ -524,7 +524,7 @@ export default function Terminal() {
             {/* TERMINAL FOOTER */}
             <div className="px-5 py-3 bg-surface/30 border-t border-surface flex justify-between items-center z-30 shrink-0">
               <div className="flex gap-5 items-center">
-                <button 
+                <button suppressHydrationWarning 
                   onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText("jothishgandham2@gmail.com"); setCopied(true); setTimeout(()=>setCopied(false),1500)}} 
                   className="text-[9px] font-mono text-muted hover:text-foreground transition-colors uppercase tracking-[0.24em] flex items-center gap-1.5 cursor-pointer"
                 >

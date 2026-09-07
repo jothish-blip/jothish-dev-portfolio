@@ -142,7 +142,7 @@ export default function SpecializationModal({
                             </p>
                           </div>
                         </div>
-                        <button
+                        <button suppressHydrationWarning
                           onClick={onClose}
                           className="rounded-sm p-1.5 text-muted hover:bg-surface hover:text-foreground focus:outline-none transition-colors border border-transparent hover:border-surface-strong shrink-0"
                           aria-label="Close modal"
@@ -297,7 +297,7 @@ export default function SpecializationModal({
                               const isSelected = selectedCourse?.id === course.id;
                               
                               return (
-                                <button
+                                <button suppressHydrationWarning
                                   key={course.id}
                                   onClick={() => handleSelectCourse(course.id)}
                                   className="group relative flex w-full items-start gap-4 rounded-md p-3 text-left transition-all duration-300 border border-transparent focus:outline-none"

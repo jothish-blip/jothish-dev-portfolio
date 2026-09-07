@@ -118,7 +118,7 @@ export default function Sidebar({ setSearchOpen, mobileOpen, setMobileOpen }: { 
           {(!collapsed || isMobile) && <h2 className="font-mono text-sm tracking-[0.2em] uppercase font-semibold">SOC Console</h2>}
         </div>
         {isMobile && setMobileOpen && (
-          <button onClick={() => setMobileOpen(false)} className="text-muted hover:text-foreground">
+          <button suppressHydrationWarning onClick={() => setMobileOpen(false)} className="text-muted hover:text-foreground">
             <X size={18} />
           </button>
         )}
@@ -150,7 +150,7 @@ export default function Sidebar({ setSearchOpen, mobileOpen, setMobileOpen }: { 
                     {(!collapsed || isMobile) && <span className="truncate">{item.label}</span>}
                   </Link>
                   {(!collapsed || isMobile) && (
-                    <button 
+                    <button suppressHydrationWarning 
                       onClick={() => togglePin(item.id)}
                       className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-muted hover:text-[#E4002B] transition-opacity"
                     >
@@ -196,7 +196,7 @@ export default function Sidebar({ setSearchOpen, mobileOpen, setMobileOpen }: { 
                   {(!collapsed || isMobile) && <span className="truncate">{item.label}</span>}
                 </Link>
                 {(!collapsed || isMobile) && (
-                  <button 
+                  <button suppressHydrationWarning 
                     onClick={() => togglePin(item.id)}
                     className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-muted hover:text-foreground transition-opacity"
                   >
@@ -211,7 +211,7 @@ export default function Sidebar({ setSearchOpen, mobileOpen, setMobileOpen }: { 
 
       <div className="p-4 border-t border-surface shrink-0">
         <form action={logout}>
-          <button type="submit" className={`flex w-full items-center gap-3 py-3 text-muted hover:text-[#E4002B] hover:bg-[#E4002B]/10 rounded-sm font-mono text-[11px] uppercase tracking-widest transition-colors ${collapsed && !isMobile ? 'justify-center px-0' : 'px-4'}`} title={collapsed && !isMobile ? "End Session" : undefined}>
+          <button suppressHydrationWarning type="submit" className={`flex w-full items-center gap-3 py-3 text-muted hover:text-[#E4002B] hover:bg-[#E4002B]/10 rounded-sm font-mono text-[11px] uppercase tracking-widest transition-colors ${collapsed && !isMobile ? 'justify-center px-0' : 'px-4'}`} title={collapsed && !isMobile ? "End Session" : undefined}>
             <LogOut size={16} className="shrink-0" />
             {(!collapsed || isMobile) && "End Session"}
           </button>
@@ -224,7 +224,7 @@ export default function Sidebar({ setSearchOpen, mobileOpen, setMobileOpen }: { 
     <>
       {/* Desktop Sidebar */}
       <aside className={`border-r border-surface bg-surface/10 flex-col hidden md:flex transition-all duration-300 relative ${collapsed ? 'w-20' : 'w-64'}`}>
-        <button 
+        <button suppressHydrationWarning 
           onClick={toggleCollapse}
           className="absolute -right-3 top-8 bg-background border border-surface rounded-full p-1 text-muted hover:text-foreground z-10 shadow-sm"
         >

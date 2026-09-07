@@ -1,6 +1,7 @@
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import GlobalJsonLd from "@/components/SEO/GlobalJsonLd";
+import PortfolioSPA from "@/components/layout/PortfolioSPA";
 
 export default function PublicLayout({
   children,
@@ -12,6 +13,7 @@ export default function PublicLayout({
       <GlobalJsonLd />
       <Navbar />
       <div className="flex-1 flex flex-col">
+        <PortfolioSPA />
         {children}
       </div>
       <Footer />

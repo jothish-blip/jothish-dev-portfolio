@@ -128,7 +128,7 @@ export default function ProjectModal({ project, onClose }: Props) {
           <div className="flex items-center justify-between px-6 py-4 border-b border-surface bg-background shrink-0 z-40 relative">
             <div className="flex items-center gap-4">
               {activeChild ? (
-                <button 
+                <button suppressHydrationWarning 
                   onClick={() => setActiveChild(null)}
                   className="flex items-center gap-2 text-[9px] font-mono tracking-[0.24em] uppercase text-muted hover:text-foreground transition-colors"
                 >
@@ -141,7 +141,7 @@ export default function ProjectModal({ project, onClose }: Props) {
               )}
             </div>
             
-            <button 
+            <button suppressHydrationWarning 
               onClick={onClose}
               className="p-1.5 text-muted hover:text-foreground transition-colors rounded-sm hover:bg-surface border border-transparent hover:border-surface-strong"
               aria-label="Close modal"
@@ -291,7 +291,7 @@ export default function ProjectModal({ project, onClose }: Props) {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {project.childProjects.map((child) => (
-                      <button 
+                      <button suppressHydrationWarning 
                         key={child.id}
                         onClick={() => setActiveChild(child)}
                         className="project-modal-hover group flex flex-col text-left p-6 border border-surface rounded-md bg-background transition-all duration-300"
@@ -410,7 +410,7 @@ export default function ProjectModal({ project, onClose }: Props) {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
                     {prevProject ? (
-                      <button 
+                      <button suppressHydrationWarning 
                         onClick={() => navigateTo(prevProject)}
                         className="group flex flex-col text-left p-5 border border-surface rounded-sm hover:border-surface-strong transition-colors"
                       >
@@ -420,7 +420,7 @@ export default function ProjectModal({ project, onClose }: Props) {
                     ) : <div className="hidden sm:block"></div>}
 
                     {nextProject ? (
-                      <button 
+                      <button suppressHydrationWarning 
                         onClick={() => navigateTo(nextProject)}
                         className="group flex flex-col text-right items-end p-5 border border-surface rounded-sm hover:border-surface-strong transition-colors"
                       >

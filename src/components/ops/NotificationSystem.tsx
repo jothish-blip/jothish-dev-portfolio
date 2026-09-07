@@ -151,7 +151,7 @@ export default function NotificationSystem() {
                   {n.message}
                 </p>
               </div>
-              <button 
+              <button suppressHydrationWarning 
                 onClick={() => removeNotification(n.id)}
                 className="text-muted hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
               >

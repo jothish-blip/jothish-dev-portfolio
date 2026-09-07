@@ -287,7 +287,7 @@ export default function ConsentSystem() {
           >
             {/* Dismiss button — only when previously declined */}
             {isPrevDeclined && (
-              <button
+              <button suppressHydrationWarning
                 onClick={dismiss}
                 className="absolute top-4 right-4 p-2 rounded-sm text-muted hover:text-foreground hover:bg-surface border border-transparent hover:border-surface-strong transition-colors"
                 aria-label="Close without consenting"
@@ -341,7 +341,7 @@ export default function ConsentSystem() {
                 <span>Visitor Designation</span>
                 <span className="text-muted bg-surface/30 px-2 py-1 rounded-sm border border-surface">Optional</span>
               </label>
-              <input
+              <input suppressHydrationWarning
                 id="consent-name"
                 type="text"
                 autoComplete="given-name"
@@ -369,7 +369,7 @@ export default function ConsentSystem() {
               {/* Policies */}
               <label className="flex items-start gap-4 cursor-pointer group">
                 <div className="relative flex items-center justify-center mt-0.5 shrink-0">
-                  <input
+                  <input suppressHydrationWarning
                     type="checkbox"
                     checked={acceptPolicies}
                     onChange={e => setAcceptPolicies(e.target.checked)}
@@ -392,7 +392,7 @@ export default function ConsentSystem() {
               {/* Cookies */}
               <label className="flex items-start gap-4 cursor-pointer group">
                 <div className="relative flex items-center justify-center mt-0.5 shrink-0">
-                  <input
+                  <input suppressHydrationWarning
                     type="checkbox"
                     checked={acceptCookies}
                     onChange={e => setAcceptCookies(e.target.checked)}
@@ -424,7 +424,7 @@ export default function ConsentSystem() {
                 >
                   View Policies
                 </a>
-                <button
+                <button suppressHydrationWarning
                   onClick={handleAccept}
                   disabled={!canContinue}
                   aria-disabled={!canContinue}

@@ -44,7 +44,7 @@ export default function ProfileDropdown() {
 
   return (
     <div className="relative" ref={containerRef}>
-      <button 
+      <button suppressHydrationWarning 
         onClick={() => setIsOpen(!isOpen)}
         className="p-1 border border-surface rounded-full overflow-hidden ml-2 hover:ring-2 hover:ring-surface transition-all group"
       >
@@ -69,7 +69,7 @@ export default function ProfileDropdown() {
             
             <div className="max-h-80 overflow-y-auto custom-scrollbar p-1">
               {LINKS.map((link, idx) => (
-                <button
+                <button suppressHydrationWarning
                   key={idx}
                   onClick={() => handleNav(link.href)}
                   className="w-full flex items-center gap-3 px-3 py-2 text-left rounded-sm transition-colors text-muted hover:text-foreground hover:bg-surface/50 group"
@@ -82,7 +82,7 @@ export default function ProfileDropdown() {
               <div className="my-1 border-t border-surface"></div>
               
               <form action={logout}>
-                <button
+                <button suppressHydrationWarning
                   type="submit"
                   className="w-full flex items-center gap-3 px-3 py-2 text-left rounded-sm transition-colors text-muted hover:text-[#E4002B] hover:bg-[#E4002B]/10"
                 >

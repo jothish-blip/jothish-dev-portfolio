@@ -74,7 +74,7 @@ export default function QuickActions() {
 
   return (
     <div className="relative" ref={containerRef}>
-      <button 
+      <button suppressHydrationWarning 
         onClick={toggleOpen}
         className="hidden sm:flex items-center gap-2 text-[10px] font-mono tracking-widest uppercase text-muted hover:text-foreground transition-colors border border-surface px-3 py-1.5 rounded-sm bg-surface/10 hover:bg-surface/30"
       >
@@ -93,7 +93,7 @@ export default function QuickActions() {
           >
             <div className="p-2 border-b border-surface flex items-center gap-2 bg-surface/5">
               <Search size={12} className="text-muted" />
-              <input 
+              <input suppressHydrationWarning 
                 type="text" 
                 placeholder="Find action..." 
                 className="bg-transparent border-none outline-none text-xs font-mono text-foreground w-full placeholder:text-muted/50"
@@ -106,7 +106,7 @@ export default function QuickActions() {
             
             <div className="max-h-64 overflow-y-auto custom-scrollbar p-1">
               {filteredActions.length > 0 ? filteredActions.map((action, idx) => (
-                <button
+                <button suppressHydrationWarning
                   key={action.id}
                   onClick={() => { router.push(action.href); setIsOpen(false); }}
                   onMouseEnter={() => setSelectedIndex(idx)}
@@ -124,7 +124,7 @@ export default function QuickActions() {
               <div className="my-1 border-t border-surface"></div>
               
               <form action={logout} id="quick-logout-form">
-                <button
+                <button suppressHydrationWarning
                   type="submit"
                   onMouseEnter={() => setSelectedIndex(filteredActions.length)}
                   className={`w-full flex items-center gap-3 px-3 py-2 text-left rounded-sm transition-colors ${

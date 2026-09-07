@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ThemeInit from "@/components/ThemeInit";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import ConsentSystem from "@/components/ConsentSystem";
 
@@ -98,9 +97,6 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground transition-colors antialiased">
         
-        {/* Theme initialization (client-side) */}
-        <ThemeInit />
-
         {/* Main App */}
         <div className="flex-1 flex flex-col pb-safe">
           <Suspense fallback={null}>

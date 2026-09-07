@@ -39,7 +39,7 @@ export default function SkillCard({ domain, isExpanded, onToggle }: Props) {
         boxShadow: '0 8px 30px color-mix(in srgb, var(--accent-skills) 8%, transparent)'
       } : {}}
     >
-      <button 
+      <button suppressHydrationWarning 
         onClick={onToggle}
         className="flex w-full items-center justify-between p-4 sm:p-5 text-left focus:outline-none bg-transparent"
         aria-expanded={isExpanded}
@@ -141,7 +141,7 @@ export default function SkillCard({ domain, isExpanded, onToggle }: Props) {
                     ))}
                     
                     {hiddenTechCount > 0 && (
-                      <button 
+                      <button suppressHydrationWarning 
                         onClick={(e) => { e.stopPropagation(); setShowAllTech(true); }}
                         className="group flex items-center gap-1.5 rounded-sm border border-surface bg-surface/10 px-3 py-2 transition-all duration-300 hover:border-surface-strong hover:bg-surface/30"
                       >

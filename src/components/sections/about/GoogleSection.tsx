@@ -58,7 +58,7 @@ export default function GoogleSection() {
               />
             </div>
 
-            <button
+            <button suppressHydrationWarning
               onClick={() => setIsOpen(true)}
               className="group flex flex-col md:flex-row items-center gap-4 px-8 py-5 border border-surface bg-background rounded-md transition-all duration-300 hover:bg-surface/50 w-full max-w-2xl"
               style={{ '--hover-border': 'color-mix(in srgb, var(--accent-about) 40%, transparent)' } as React.CSSProperties}
@@ -87,7 +87,7 @@ export default function GoogleSection() {
             
             {/* Top Close Button */}
             <div className="flex justify-end mb-[-1rem]">
-              <button
+              <button suppressHydrationWarning
                 onClick={() => setIsOpen(false)}
                 className="text-[9px] font-mono uppercase tracking-[0.24em] text-muted transition-colors flex items-center gap-2 bg-surface/30 px-3 py-1.5 rounded-sm hover:bg-surface border border-transparent hover:border-surface-strong"
                 style={{ '--hover-text': 'var(--accent-about)' } as React.CSSProperties}
@@ -171,7 +171,7 @@ export default function GoogleSection() {
 
             {/* Bottom Close Button */}
             <div className="flex justify-center pt-8">
-              <button
+              <button suppressHydrationWarning
                 onClick={() => setIsOpen(false)}
                 className="text-[9px] font-mono uppercase tracking-[0.24em] border border-surface px-6 py-3 rounded-sm text-foreground transition-all duration-300 bg-surface/20"
                 style={{ 

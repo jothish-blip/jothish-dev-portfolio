@@ -152,7 +152,7 @@ export default function IdentitySection() {
             
             {/* FLOATING DROPDOWN MENU */}
             <div ref={dropdownRef} className="relative">
-              <button
+              <button suppressHydrationWarning
                 onClick={() => setShowResumeOptions((prev) => !prev)}
                 className="px-4 py-2.5 border border-surface rounded-sm font-mono text-[9px] hover:opacity-80 transition-all uppercase tracking-[0.24em] flex items-center gap-1.5"
                 style={{ color: 'var(--accent-about)' }}

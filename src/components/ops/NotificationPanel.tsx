@@ -106,7 +106,7 @@ export default function NotificationPanel() {
 
   return (
     <div className="relative" ref={containerRef}>
-      <button 
+      <button suppressHydrationWarning 
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 text-muted hover:text-foreground transition-colors rounded-sm hover:bg-surface/30"
       >
@@ -130,16 +130,16 @@ export default function NotificationPanel() {
                 Notifications {unreadCount > 0 && <span className="bg-[#E4002B] text-white px-1.5 py-0.5 rounded-sm">{unreadCount}</span>}
               </span>
               <div className="flex gap-2">
-                <button onClick={() => setFilter(f => f === 'ALL' ? 'UNREAD' : 'ALL')} className={`p-1.5 rounded-sm transition-colors ${filter === 'UNREAD' ? 'bg-surface text-foreground' : 'text-muted hover:bg-surface/50'}`} title="Toggle Unread">
+                <button suppressHydrationWarning onClick={() => setFilter(f => f === 'ALL' ? 'UNREAD' : 'ALL')} className={`p-1.5 rounded-sm transition-colors ${filter === 'UNREAD' ? 'bg-surface text-foreground' : 'text-muted hover:bg-surface/50'}`} title="Toggle Unread">
                   <Filter size={12} />
                 </button>
-                <button onClick={handleMarkAllRead} className="text-[9px] text-[#E4002B] font-mono hover:underline px-2 py-1 bg-[#E4002B]/10 rounded-sm">Mark all read</button>
+                <button suppressHydrationWarning onClick={handleMarkAllRead} className="text-[9px] text-[#E4002B] font-mono hover:underline px-2 py-1 bg-[#E4002B]/10 rounded-sm">Mark all read</button>
               </div>
             </div>
 
             <div className="p-2 border-b border-surface bg-surface/5 flex items-center gap-2">
                <Search size={12} className="text-muted ml-1" />
-               <input 
+               <input suppressHydrationWarning 
                  type="text" 
                  placeholder="Search notifications..." 
                  className="bg-transparent border-none outline-none text-[10px] font-mono text-foreground w-full"
@@ -171,11 +171,11 @@ export default function NotificationPanel() {
                     
                     <div className="flex items-center gap-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       {!n.is_read && (
-                        <button onClick={(e) => { e.stopPropagation(); handleMarkRead(n.id); }} className="text-[9px] font-mono text-emerald-500 hover:underline flex items-center gap-1">
+                        <button suppressHydrationWarning onClick={(e) => { e.stopPropagation(); handleMarkRead(n.id); }} className="text-[9px] font-mono text-emerald-500 hover:underline flex items-center gap-1">
                           <Check size={10} /> Mark Read
                         </button>
                       )}
-                      <button onClick={(e) => handleDelete(n.id, e)} className="text-[9px] font-mono text-[#E4002B] hover:underline flex items-center gap-1">
+                      <button suppressHydrationWarning onClick={(e) => handleDelete(n.id, e)} className="text-[9px] font-mono text-[#E4002B] hover:underline flex items-center gap-1">
                         <Trash2 size={10} /> Delete
                       </button>
                     </div>
@@ -192,7 +192,7 @@ export default function NotificationPanel() {
             </div>
             
             <div className="p-2 border-t border-surface bg-background text-center">
-              <button onClick={() => { router.push('/ops/notifications'); setIsOpen(false); }} className="text-[10px] font-mono text-muted hover:text-foreground uppercase tracking-widest flex items-center justify-center gap-1.5 w-full py-1">
+              <button suppressHydrationWarning onClick={() => { router.push('/ops/notifications'); setIsOpen(false); }} className="text-[10px] font-mono text-muted hover:text-foreground uppercase tracking-widest flex items-center justify-center gap-1.5 w-full py-1">
                 View All History <ExternalLink size={10} />
               </button>
             </div>
