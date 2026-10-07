@@ -1,38 +1,33 @@
-# Jothish Gandham - Portfolio
+# Jothish Gandham - Cybersecurity Analyst Portfolio
 
 ## Summary
-Jothish Gandham is a passionate Cybersecurity professional and Developer specializing in network traffic analysis, log investigation, detection engineering, and building robust, secure applications.
+Jothish Gandham is a passionate Cybersecurity professional and Detection Engineer specializing in SOC operations, incident response, network traffic analysis, log investigation, SIEM (Splunk, Google Chronicle, Microsoft Sentinel, Wazuh), and security automation.
 
 ## Owner Information
-- Name: Jothish Gandham
-- Role: Cybersecurity Analyst & Developer
+- Name: Jothish Gandham (Gandham Jothish Guru Karthikeya Reddy)
+- Role: Cybersecurity Analyst & Detection Engineer
 - Website: https://www.webjothishanalyst.site
-- GitHub: https://github.com/JothishGandham
-- Email: webjothishanalyst@gmail.com
+- GitHub: https://github.com/jothish-blip
+- LinkedIn: https://linkedin.com/in/jothish-gandham
+- Email: jothishgandham2@gmail.com
 
-## Skills
-- Operating Systems: Linux, Windows, System Administration
-- Network Analysis: Wireshark, tcpdump, Packet Capture
-- SIEM & Detection: Splunk, Google Chronicle, Event Correlation
-- Endpoint Security: EDR Concepts, Windows Event Logs, Host Investigation
-- Programming: Python, SQL, Automation & Scripting
-- Development: React, Next.js, Node.js, Git, Version Control
+## Core Competencies & Skills
+- Security Operations: Incident Response, Threat Detection, Phishing Analysis, Malware Investigation, Log Analysis
+- SIEM & Tools: Splunk, Google Chronicle, Microsoft Sentinel, Wazuh, Wireshark, TCPDump, Suricata, VirusTotal
+- Frameworks & Standards: NIST Cybersecurity Framework (CSF), NIST SP 800-30, MITRE ATT&CK
+- Network Security: TCP/IP, Network Defense, IDS/IPS Configuration, Packet Analysis
+- Programming & OS: Python (Security Automation & Regex), SQL (Log Parsing), Linux CLI, Bash
 
-## Services & Expertise
-- Incident Response
-- Detection Rules
-- Threat Hunting
-- Blue Team Operations
-- Web Application Security
-- Secure Software Development
+## Certifications & Specializations
+- Google Cybersecurity Professional Certificate: https://www.webjothishanalyst.site/certificates/cybersecurity
+- Google Network Security Specialization: https://www.webjothishanalyst.site/certificates/network-security
+- Google Prompting Essentials Specialization: https://www.webjothishanalyst.site/certificates/prompting-essentials
 
-## Important Pages
-- Home: https://www.webjothishanalyst.site/home
-- About: https://www.webjothishanalyst.site/about
-- Projects: https://www.webjothishanalyst.site/projects
-- Skills: https://www.webjothishanalyst.site/skills
-- Terminal: https://www.webjothishanalyst.site/terminal
-- Contact: https://www.webjothishanalyst.site/contact
-
-## Notes for AI Crawlers
-This is a single-page application (SPA) where all major content sections are rendered dynamically. While the URLs (e.g. `/about`, `/projects`) update to reflect the user's scroll position, direct navigation to any of these routes provides the fully server-rendered content with corresponding JSON-LD and OpenGraph metadata.
+## Key Public Pages
+- Main Portfolio: https://www.webjothishanalyst.site/
+- Interactive Resume: https://www.webjothishanalyst.site/resume
+- Privacy Policy: https://www.webjothishanalyst.site/privacy-policy
+- Terms & Conditions: https://www.webjothishanalyst.site/terms-and-conditions
+- Cookie Policy: https://www.webjothishanalyst.site/cookie-policy
+- Security Architecture & Policy: https://www.webjothishanalyst.site/security-policy
+- Responsible Disclosure: https://www.webjothishanalyst.site/responsible-disclosure

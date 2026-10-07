@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
-import { createAdminClient } from '@/utils/supabase/server';
+import { createAdminClient, isSupabaseConfigured } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { findActiveVisitorSession } from '@/lib/session-service';
 
 export async function POST(request: Request) {
   try {
+    if (!isSupabaseConfigured()) {
+      return NextResponse.json({ success: true, mocked: true });
+    }
+
     const body = await request.json();
     const { type } = body;
     

@@ -192,32 +192,32 @@ export default function Navbar() {
     };
   }, []);
 
-  // Update URL based on active section
+  // Update URL hash and document title based on active section
   useEffect(() => {
+    if (pathname !== '/') return;
+
     const titles: Record<string, string> = {
       about: "About | Jothish Gandham",
       projects: "Projects | Jothish Gandham",
       skills: "Skills | Jothish Gandham",
       terminal: "Terminal | Jothish Gandham",
       contact: "Contact | Jothish Gandham",
-      home: "Home | Jothish Gandham",
+      home: "Jothish Gandham — Cybersecurity Analyst & Detection Engineer",
     };
 
-    if (active) {
-      const url = `/${active}`;
-      const currentPath = window.location.pathname.replace(/\/$/, "");
-      if (currentPath !== url) {
-        window.history.replaceState(null, "", url);
-        document.title = titles[active] || "Jothish Gandham";
+    if (active && active !== "home") {
+      const hash = `#${active}`;
+      if (window.location.hash !== hash) {
+        window.history.replaceState(null, "", hash);
       }
+      document.title = titles[active] || "Jothish Gandham";
     } else if (window.scrollY < 100) {
-      const currentPath = window.location.pathname.replace(/\/$/, "");
-      if (currentPath !== "/home" && currentPath !== "") {
-        window.history.replaceState(null, "", "/home");
-        document.title = titles.home;
+      if (window.location.hash) {
+        window.history.replaceState(null, "", "/");
       }
+      document.title = titles.home;
     }
-  }, [active]);
+  }, [active, pathname]);
 
   // Keyboard Navigation
   useEffect(() => {
@@ -580,7 +580,7 @@ export default function Navbar() {
             </h3>
             
             <a
-              href="/Resume"
+              href="/resume"
               className="block w-full text-center px-4 py-3.5 border border-surface bg-surface/20 hover:bg-surface text-foreground text-[10px] font-mono uppercase tracking-[0.24em] transition-all rounded-sm"
               onClick={() => setShowResumeOptions(false)}
             >

@@ -1,16 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useMemo } from "react";
 import { skillDomains } from "./data";
-import { Check, ArrowRight, Search, FileText, Award } from "lucide-react";
+import { Check, Search, FileText, Award } from "lucide-react";
 import SkillCard from "./SkillCard";
 import SkillChip from "./SkillChip";
 import { SkillItem } from "./types";
 
 const INITIAL_DOMAINS_MOBILE = 4;
 
-// 6. HELPER: Categorize Technologies for the "Documentation" feel
+// Categorize Technologies for the "Documentation" feel
 const categorizeTech = (techs: SkillItem[]) => {
   const categories: Record<string, SkillItem[]> = {
     Languages: [],
@@ -32,13 +31,10 @@ const categorizeTech = (techs: SkillItem[]) => {
     }
   });
 
-  // Remove empty categories
   return Object.entries(categories).filter(([_, items]) => items.length > 0);
 };
 
 export default function SkillsSection() {
-  const [mounted, setMounted] = useState(false);
-  
   // Mobile State
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showAllMobile, setShowAllMobile] = useState(false);
@@ -48,22 +44,27 @@ export default function SkillsSection() {
   const [activeDomainId, setActiveDomainId] = useState<string>(skillDomains[0].id);
   const [hoveredDomainId, setHoveredDomainId] = useState<string | null>(null);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Search Logic (Memoized)
+  const filteredDomains = useMemo(() => {
+    if (!searchQuery.trim()) return skillDomains;
+    const q = searchQuery.toLowerCase();
+    return skillDomains.filter(d => 
+      d.title.toLowerCase().includes(q) || 
+      d.technologies.some(t => t.name.toLowerCase().includes(q))
+    );
+  }, [searchQuery]);
 
-  // 7. Search Logic
-  const filteredDomains = skillDomains.filter(d => 
-    d.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    d.technologies.some(t => t.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const activeDomain = useMemo(() => {
+    return skillDomains.find(d => d.id === activeDomainId) || skillDomains[0];
+  }, [activeDomainId]);
 
-  const activeDomain = skillDomains.find(d => d.id === activeDomainId) || skillDomains[0];
+  const categorizedActiveTech = useMemo(() => {
+    return categorizeTech(activeDomain.technologies);
+  }, [activeDomain]);
 
-  // 8. Keyboard Navigation (VS Code Style)
+  // Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Only process if user is focused inside the window and not in an input
       if (document.activeElement?.tagName === "INPUT") return;
       
       const currentIndex = filteredDomains.findIndex(d => d.id === activeDomainId);
@@ -85,8 +86,8 @@ export default function SkillsSection() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeDomainId, filteredDomains]);
 
-  const totalSkills = skillDomains.reduce((acc, domain) => acc + domain.coreSkills.length, 0);
-  const totalTech = skillDomains.reduce((acc, domain) => acc + domain.technologies.length, 0);
+  const totalSkills = useMemo(() => skillDomains.reduce((acc, domain) => acc + domain.coreSkills.length, 0), []);
+  const totalTech = useMemo(() => skillDomains.reduce((acc, domain) => acc + domain.technologies.length, 0), []);
 
   const visibleMobileDomains = showAllMobile 
     ? skillDomains 
@@ -103,14 +104,13 @@ export default function SkillsSection() {
           border-color: color-mix(in srgb, var(--accent-skills) 50%, transparent) !important;
           color: var(--accent-skills) !important;
         }
-        /* Custom scrollbar for the right panel */
         .doc-scrollbar::-webkit-scrollbar { width: 6px; }
         .doc-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .doc-scrollbar::-webkit-scrollbar-thumb { background: var(--surface-strong); border-radius: 4px; }
         .doc-scrollbar:hover::-webkit-scrollbar-thumb { background: var(--muted); }
       `}</style>
       
-      {/* 19. BETTER HEADER */}
+      {/* HEADER */}
       <header className="relative mx-auto w-full max-w-4xl text-center space-y-5 py-8 flex flex-col items-center">
         <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center overflow-hidden">
           <div 
@@ -144,27 +144,21 @@ export default function SkillsSection() {
       {/* MOBILE LAYOUT (ACCORDION)                  */}
       {/* ========================================== */}
       <div className="block lg:hidden space-y-4 relative z-10">
-        {visibleMobileDomains.map((domain, index) => (
-          <motion.div
-            key={domain.id}
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-          >
+        {visibleMobileDomains.map((domain) => (
+          <div key={domain.id} className="transition-opacity duration-200">
             <SkillCard 
               domain={domain}
               isExpanded={expandedId === domain.id}
               onToggle={() => setExpandedId(prev => prev === domain.id ? null : domain.id)}
             />
-          </motion.div>
+          </div>
         ))}
 
         {skillDomains.length > INITIAL_DOMAINS_MOBILE && (
           <div className="mt-6 flex justify-center">
             <button suppressHydrationWarning
               onClick={() => setShowAllMobile(!showAllMobile)}
-              className="view-more-skills px-6 py-3 border border-surface bg-surface/10 rounded-sm text-[10px] font-mono uppercase tracking-[0.24em] text-muted transition-all duration-300"
+              className="view-more-skills px-6 py-3 border border-surface bg-surface/10 rounded-sm text-[10px] font-mono uppercase tracking-[0.24em] text-muted transition-colors duration-200"
             >
               {showAllMobile ? "Show Less" : "View More Skills"}
             </button>
@@ -180,7 +174,7 @@ export default function SkillsSection() {
         {/* LEFT NAV (VS Code Explorer Style) */}
         <div className="col-span-4 flex flex-col sticky top-32 h-[calc(100vh-150px)]">
           
-          {/* 7. Search Bar */}
+          {/* Search Bar */}
           <div className="relative mb-6">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
             <input suppressHydrationWarning 
@@ -206,18 +200,14 @@ export default function SkillsSection() {
                   onClick={() => setActiveDomainId(domain.id)}
                   onMouseEnter={() => setHoveredDomainId(domain.id)}
                   onMouseLeave={() => setHoveredDomainId(null)}
-                  className={`group w-full flex items-center justify-between px-2 py-2.5 rounded-sm transition-all duration-200 outline-none ${
+                  className={`group w-full flex items-center justify-between px-2 py-2.5 rounded-sm transition-colors duration-150 outline-none ${
                     isActive ? "bg-surface/40" : "hover:bg-surface/20"
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    {/* 2 & 3. Folder / Active Dot Indicators */}
                     <span className="w-4 flex justify-center text-muted">
                       {isActive ? (
-                        <motion.span 
-                          layoutId="active-dot"
-                          initial={{ scale: 0.8 }}
-                          animate={{ scale: 1 }}
+                        <span 
                           className="w-1.5 h-1.5 rounded-full" 
                           style={{ backgroundColor: 'var(--accent-skills)', boxShadow: '0 0 8px var(--accent-skills)' }} 
                         />
@@ -226,12 +216,11 @@ export default function SkillsSection() {
                       )}
                     </span>
                     
-                    {/* 16. Nav Counter & Title */}
                     <span className="font-mono text-[10px] text-muted/50">
                       {String(idx + 1).padStart(2, '0')}
                     </span>
                     
-                    <span className={`text-[13px] tracking-tight transition-transform duration-200 ${isActive ? "text-foreground font-semibold" : "text-muted group-hover:text-foreground group-hover:translate-x-1"}`}>
+                    <span className={`text-[13px] tracking-tight transition-transform duration-150 ${isActive ? "text-foreground font-semibold" : "text-muted group-hover:text-foreground"}`}>
                       {domain.title}
                     </span>
                   </div>
@@ -247,166 +236,133 @@ export default function SkillsSection() {
 
         {/* RIGHT PANEL (Documentation Style) */}
         <div className="col-span-8 h-[calc(100vh-150px)]">
-          {/* 15. Hover Preview via conditional border color */}
           <div 
-            className="flex flex-col h-full bg-background border rounded-md shadow-2xl overflow-hidden transition-colors duration-500 relative"
+            className="flex flex-col h-full bg-background border rounded-md shadow-2xl overflow-hidden transition-colors duration-200 relative"
             style={{ borderColor: hoveredDomainId || activeDomainId ? 'color-mix(in srgb, var(--accent-skills) 30%, var(--border))' : 'var(--border)' }}
           >
-            {/* 13. Tiny Background Pattern */}
             <div className="absolute inset-0 z-0 opacity-5 bg-[radial-gradient(circle,currentColor_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
 
             {/* Panel Inner Scroll Area */}
             <div className="flex-1 overflow-y-auto doc-scrollbar relative z-10">
               
-              {/* 9. Slide Transitions */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeDomain.id}
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -30 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="pb-16"
-                >
+              <div key={activeDomain.id} className="pb-16 animate-in fade-in duration-200">
+                
+                {/* HERO BANNER INSIDE PANEL */}
+                <div className="relative px-10 py-12 border-b border-surface overflow-hidden bg-surface/5">
+                  <div className="absolute inset-0 opacity-[0.15] mix-blend-screen" style={{ background: 'linear-gradient(135deg, var(--accent-skills), transparent)' }} />
                   
-                  {/* 21 & 14 & 5. HERO BANNER INSIDE PANEL */}
-                  <div className="relative px-10 py-12 border-b border-surface overflow-hidden bg-surface/5">
-                    {/* Accent Glow Background */}
-                    <div className="absolute inset-0 opacity-[0.15] mix-blend-screen" style={{ background: 'linear-gradient(135deg, var(--accent-skills), transparent)' }} />
+                  <div className="relative z-10 flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <activeDomain.icon size={20} className="text-[var(--accent-skills)]" />
+                      <h3 
+                        className="text-3xl font-bold uppercase tracking-tight text-foreground"
+                        style={{ textShadow: '0 0 30px color-mix(in srgb, var(--accent-skills) 50%, transparent)' }}
+                      >
+                        {activeDomain.title}
+                      </h3>
+                    </div>
                     
-                    <div className="relative z-10 flex flex-col gap-4">
-                      <div className="flex items-center gap-3">
-                        <activeDomain.icon size={20} className="text-[var(--accent-skills)]" />
-                        <h3 
-                          className="text-3xl font-bold uppercase tracking-tight text-foreground"
-                          style={{ textShadow: '0 0 30px color-mix(in srgb, var(--accent-skills) 50%, transparent)' }}
+                    <p className="text-[14px] text-muted max-w-2xl leading-relaxed">
+                      {activeDomain.description}
+                    </p>
+
+                    {/* Mini Statistics */}
+                    <div className="flex gap-10 mt-6 pt-6 border-t border-surface/50">
+                      <div>
+                        <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted mb-1">Core</p>
+                        <p className="text-2xl font-bold text-foreground">{String(activeDomain.coreSkills.length).padStart(2, '0')}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted mb-1">Tools</p>
+                        <p className="text-2xl font-bold text-foreground">{String(activeDomain.technologies.length).padStart(2, '0')}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted mb-1">Updated</p>
+                        <p className="text-2xl font-bold text-foreground">2026</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* DOCUMENTATION SECTIONS */}
+                <div className="px-10 py-8 space-y-12">
+                  
+                  {/* Core Competencies */}
+                  <section>
+                    <h4 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted mb-6 pb-2 border-b border-surface">
+                      Core Competencies
+                    </h4>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {activeDomain.coreSkills.map((skill) => (
+                        <li 
+                          key={skill}
+                          className="flex items-start gap-3 text-[13px] text-foreground/90 font-medium"
                         >
-                          {activeDomain.title}
-                        </h3>
-                      </div>
-                      
-                      <p className="text-[14px] text-muted max-w-2xl leading-relaxed">
-                        {activeDomain.description}
-                      </p>
+                          <Check size={16} style={{ color: 'var(--accent-skills)' }} className="shrink-0 mt-0.5" />
+                          <span className="leading-relaxed">{skill}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
 
-                      {/* 17. Mini Statistics */}
-                      <div className="flex gap-10 mt-6 pt-6 border-t border-surface/50">
-                        <div>
-                          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted mb-1">Core</p>
-                          <p className="text-2xl font-bold text-foreground">{String(activeDomain.coreSkills.length).padStart(2, '0')}</p>
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted mb-1">Tools</p>
-                          <p className="text-2xl font-bold text-foreground">{String(activeDomain.technologies.length).padStart(2, '0')}</p>
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted mb-1">Updated</p>
-                          <p className="text-2xl font-bold text-foreground">2026</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 4. DOCUMENTATION STYLE SECTIONS */}
-                  <div className="px-10 py-8 space-y-12">
-                    
-                    {/* Core Competencies */}
-                    <section>
-                      <h4 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted mb-6 pb-2 border-b border-surface">
-                        Core Competencies
-                      </h4>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {activeDomain.coreSkills.map((skill, i) => (
-                          <motion.li 
-                            key={skill}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.05 }}
-                            className="flex items-start gap-3 text-[13px] text-foreground/90 font-medium"
-                          >
-                            <Check size={16} style={{ color: 'var(--accent-skills)' }} className="shrink-0 mt-0.5" />
-                            <span className="leading-relaxed">{skill}</span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </section>
-
-                    {/* 6. ORGANIZED TOOLKIT */}
-                    <section>
-                      <h4 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted mb-6 pb-2 border-b border-surface">
-                        Toolkit
-                      </h4>
-                      <div className="space-y-8">
-                        {categorizeTech(activeDomain.technologies).map(([category, techs], catIdx) => (
-                          <div key={category}>
-                            <h5 className="text-[11px] font-semibold uppercase tracking-widest text-foreground/70 mb-4">
-                              {category}
-                            </h5>
-                            {/* 10. ANIMATED SKILL CHIPS */}
-                            <motion.div 
-                              className="flex flex-wrap gap-2"
-                              initial="hidden"
-                              animate="show"
-                              variants={{
-                                hidden: {},
-                                show: { transition: { staggerChildren: 0.04, delayChildren: catIdx * 0.1 } }
-                              }}
-                            >
-                              {techs.map((tech) => (
-                                <motion.div 
-                                  key={tech.name}
-                                  variants={{
-                                    hidden: { opacity: 0, scale: 0.9, y: 10 },
-                                    show: { opacity: 1, scale: 1, y: 0 }
-                                  }}
-                                >
-                                  <SkillChip skill={tech} />
-                                </motion.div>
-                              ))}
-                            </motion.div>
+                  {/* ORGANIZED TOOLKIT */}
+                  <section>
+                    <h4 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted mb-6 pb-2 border-b border-surface">
+                      Toolkit
+                    </h4>
+                    <div className="space-y-8">
+                      {categorizedActiveTech.map(([category, techs]) => (
+                        <div key={category}>
+                          <h5 className="text-[11px] font-semibold uppercase tracking-widest text-foreground/70 mb-4">
+                            {category}
+                          </h5>
+                          <div className="flex flex-wrap gap-2">
+                            {techs.map((tech) => (
+                              <SkillChip key={tech.name} skill={tech} />
+                            ))}
                           </div>
-                        ))}
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+
+                  {/* RELATED WORK & CERTIFICATIONS */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-8">
+                    <section>
+                      <h4 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted mb-4 pb-2 border-b border-surface">
+                        Related Work
+                      </h4>
+                      <div className="space-y-2">
+                        <a href="#projects" className="flex items-center gap-3 p-3 rounded-sm border border-surface bg-surface/10 hover:bg-surface/30 transition-colors group">
+                          <FileText size={14} className="text-muted group-hover:text-foreground" />
+                          <span className="text-[12px] font-medium transition-colors group-hover:text-[var(--accent-skills)]">Threat Detection Platform</span>
+                        </a>
+                        <a href="#projects" className="flex items-center gap-3 p-3 rounded-sm border border-surface bg-surface/10 hover:bg-surface/30 transition-colors group">
+                          <FileText size={14} className="text-muted group-hover:text-foreground" />
+                          <span className="text-[12px] font-medium transition-colors group-hover:text-[var(--accent-skills)]">Active Directory Lab</span>
+                        </a>
                       </div>
                     </section>
 
-                    {/* 12 & 18. RELATED WORK & CERTIFICATIONS (Mocked based on domain context) */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-8">
-                      <section>
-                        <h4 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted mb-4 pb-2 border-b border-surface">
-                          Related Work
-                        </h4>
-                        <div className="space-y-2">
-                          <a href="#projects" className="flex items-center gap-3 p-3 rounded-sm border border-surface bg-surface/10 hover:bg-surface/30 transition-colors group">
-                            <FileText size={14} className="text-muted group-hover:text-foreground" />
-                            <span className="text-[12px] font-medium transition-colors group-hover:text-[var(--accent-skills)]">Threat Detection Platform</span>
-                          </a>
-                          <a href="#projects" className="flex items-center gap-3 p-3 rounded-sm border border-surface bg-surface/10 hover:bg-surface/30 transition-colors group">
-                            <FileText size={14} className="text-muted group-hover:text-foreground" />
-                            <span className="text-[12px] font-medium transition-colors group-hover:text-[var(--accent-skills)]">Active Directory Lab</span>
-                          </a>
+                    <section>
+                      <h4 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted mb-4 pb-2 border-b border-surface">
+                        Related Certifications
+                      </h4>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-3 p-3 rounded-sm border border-surface bg-surface/10">
+                          <Award size={14} className="text-muted" style={{ color: 'var(--accent-skills)' }} />
+                          <span className="text-[12px] font-medium">Google Cybersecurity Professional</span>
                         </div>
-                      </section>
-
-                      <section>
-                        <h4 className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted mb-4 pb-2 border-b border-surface">
-                          Related Certifications
-                        </h4>
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-3 p-3 rounded-sm border border-surface bg-surface/10">
-                            <Award size={14} className="text-muted" style={{ color: 'var(--accent-skills)' }} />
-                            <span className="text-[12px] font-medium">Google Cybersecurity Professional</span>
-                          </div>
-                          <div className="flex items-center gap-3 p-3 rounded-sm border border-surface bg-surface/10">
-                            <Award size={14} className="text-muted" style={{ color: 'var(--accent-skills)' }} />
-                            <span className="text-[12px] font-medium">CompTIA Security+ (In Progress)</span>
-                          </div>
+                        <div className="flex items-center gap-3 p-3 rounded-sm border border-surface bg-surface/10">
+                          <Award size={14} className="text-muted" style={{ color: 'var(--accent-skills)' }} />
+                          <span className="text-[12px] font-medium">CompTIA Security+ (In Progress)</span>
                         </div>
-                      </section>
-                    </div>
-
+                      </div>
+                    </section>
                   </div>
-                </motion.div>
-              </AnimatePresence>
+
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
-import { createAdminClient } from '@/utils/supabase/server';
+import { createAdminClient, isSupabaseConfigured } from '@/utils/supabase/server';
 
 export async function getActiveVisitors() {
+  if (!isSupabaseConfigured()) return { data: [], count: 0 };
   const supabase = await createAdminClient();
   const { data, count, error } = await supabase
     .from('portfolio_sessions')
@@ -12,6 +13,7 @@ export async function getActiveVisitors() {
 }
 
 export async function getActiveAdmins() {
+  if (!isSupabaseConfigured()) return { data: [], count: 0 };
   const supabase = await createAdminClient();
   const { data, count, error } = await supabase
     .from('portfolio_admin_sessions')
@@ -23,6 +25,7 @@ export async function getActiveAdmins() {
 }
 
 export async function expireVisitor(sessionId: string) {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   const { error } = await supabase
     .from('portfolio_sessions')
@@ -33,6 +36,7 @@ export async function expireVisitor(sessionId: string) {
 }
 
 export async function expireAdmin(sessionId: string, adminId: string) {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   const { error } = await supabase
     .from('portfolio_admin_sessions')
@@ -44,6 +48,7 @@ export async function expireAdmin(sessionId: string, adminId: string) {
 }
 
 export async function expireAllAdmins(adminId: string) {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   const { error } = await supabase
     .from('portfolio_admin_sessions')
@@ -55,6 +60,7 @@ export async function expireAllAdmins(adminId: string) {
 }
 
 export async function sweepExpiredSessions() {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   const now = Date.now();
   
@@ -83,6 +89,7 @@ export async function sweepExpiredSessions() {
 }
 
 export async function findActiveVisitorSession(visitorId: string) {
+  if (!isSupabaseConfigured()) return null;
   const supabase = await createAdminClient();
   await sweepExpiredSessions();
   
@@ -99,6 +106,7 @@ export async function findActiveVisitorSession(visitorId: string) {
 }
 
 export async function createVisitorSession(payload: any) {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   payload.status = 'ACTIVE';
   payload.session_start_time = new Date().toISOString();
@@ -115,6 +123,7 @@ export async function createVisitorSession(payload: any) {
 }
 
 export async function updateVisitorSession(sessionId: string, updates: any) {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   const { error } = await supabase
     .from('portfolio_sessions')
@@ -124,6 +133,7 @@ export async function updateVisitorSession(sessionId: string, updates: any) {
 }
 
 export async function incrementSessionEventCount(sessionId: string) {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   const { data } = await supabase.from('portfolio_sessions').select('event_count').eq('session_id', sessionId).single();
   if (data) {
@@ -135,6 +145,7 @@ export async function incrementSessionEventCount(sessionId: string) {
 }
 
 export async function processVisitorPing(sessionId: string, path: string, type: string) {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   const { data: sessionData } = await supabase.from('portfolio_sessions').select('*').eq('session_id', sessionId).single();
   
@@ -176,6 +187,7 @@ export async function processVisitorPing(sessionId: string, path: string, type: 
 }
 
 export async function blockVisitor(visitorId: string, ipAddress: string, reason: string, adminId: string, cookieId?: string, deviceFingerprint?: string) {
+    if (!isSupabaseConfigured()) return;
     const supabase = await createAdminClient();
     const { error } = await supabase.from('portfolio_blocked_visitors').insert({
         visitor_id: visitorId,
@@ -189,12 +201,14 @@ export async function blockVisitor(visitorId: string, ipAddress: string, reason:
 }
 
 export async function unblockVisitor(visitorId: string) {
+    if (!isSupabaseConfigured()) return;
     const supabase = await createAdminClient();
     const { error } = await supabase.from('portfolio_blocked_visitors').delete().eq('visitor_id', visitorId);
     if (error) console.error('[session-service] unblockVisitor:', error);
 }
 
 export async function deleteVisitorLogs(visitorId: string) {
+    if (!isSupabaseConfigured()) return;
     const supabase = await createAdminClient();
     // Since we set ON DELETE CASCADE, deleting the visitor will delete sessions, page_views, events.
     // It will NOT delete blocked records since blocked_visitors doesn't cascade to visitors (or if it does, we should prevent it).
@@ -204,6 +218,7 @@ export async function deleteVisitorLogs(visitorId: string) {
 }
 
 export async function createAdminSession(payload: any) {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   payload.status = 'CREATED';
   const { error } = await supabase.from('portfolio_admin_sessions').insert(payload);
@@ -215,6 +230,7 @@ export async function createAdminSession(payload: any) {
 }
 
 export async function updateAdminHeartbeat(sessionId: string, userId: string) {
+  if (!isSupabaseConfigured()) return;
   const supabase = await createAdminClient();
   const newExpiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
   
@@ -232,6 +248,7 @@ export async function updateAdminHeartbeat(sessionId: string, userId: string) {
 }
 
 export async function getCount(table: string, match: any = {}, gte: any = null) {
+  if (!isSupabaseConfigured()) return 0;
   const supabase = await createAdminClient();
   let query = supabase.from(table).select('*', { count: 'exact', head: true });
   for (const [key, value] of Object.entries(match)) {
@@ -252,6 +269,7 @@ export async function getCount(table: string, match: any = {}, gte: any = null) 
 }
 
 export async function verifyAdminSession(sessionId: string, userId: string) {
+  if (!isSupabaseConfigured()) return null;
   const supabase = await createAdminClient();
   const { data } = await supabase.from('portfolio_admin_sessions')
     .select('id, expires_at, is_revoked, status, session_token')

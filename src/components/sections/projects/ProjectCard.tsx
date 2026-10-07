@@ -47,7 +47,10 @@ export default function ProjectCard({ project, onOpen }: Props) {
               src={coverImage} 
               alt={project.imageAlt || project.title}
               fill
-              className="object-cover group-hover:scale-[1.02] transition-transform duration-700" // Grayscale filters removed completely
+              sizes="(max-width: 768px) 100vw, 400px"
+              loading="lazy"
+              decoding="async"
+              className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
             />
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-muted/30">

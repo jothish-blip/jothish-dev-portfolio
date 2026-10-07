@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Jothish Gandham", url: "https://www.webjothishanalyst.site" }],
   creator: "Jothish Gandham",
+  alternates: {
+    canonical: "https://www.webjothishanalyst.site/",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",

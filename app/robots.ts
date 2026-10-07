@@ -10,12 +10,18 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: [
           '/ops',
+          '/ops/',
           '/admin',
-          '/api/private',
+          '/admin/',
+          '/api/',
           '/auth',
+          '/auth/',
           '/login',
+          '/login/',
           '/mfa',
-          '/internal'
+          '/mfa/',
+          '/internal',
+          '/internal/',
         ],
       },
       {
@@ -29,19 +35,25 @@ export default function robots(): MetadataRoute.Robots {
           'Amazonbot',
           'cohere-ai',
           'Bytespider',
-          'CCBot'
+          'CCBot',
         ],
         allow: '/',
         disallow: [
           '/ops',
+          '/ops/',
           '/admin',
-          '/api/private',
+          '/admin/',
+          '/api/',
           '/auth',
+          '/auth/',
           '/login',
+          '/login/',
           '/mfa',
-          '/internal'
+          '/mfa/',
+          '/internal',
+          '/internal/',
         ],
-      }
+      },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

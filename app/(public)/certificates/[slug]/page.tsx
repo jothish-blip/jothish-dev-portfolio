@@ -21,14 +21,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Certificate Not Found" };
   }
 
+  const url = `https://www.webjothishanalyst.site/certificates/${cert.slug}`;
+
   return {
     title: `${cert.title} | Jothish Gandham`,
     description: cert.shortDescription,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
       title: cert.title,
       description: cert.shortDescription,
       type: "article",
-      url: `https://webjothishanalyst.site/certificates/${cert.slug}`,
+      url,
       images: cert.professionalCertificate.image ? [{ url: cert.professionalCertificate.image }] : undefined,
     },
     twitter: {
@@ -58,8 +63,8 @@ export default async function CertificatePage({ params }: Props) {
       "@type": "Organization",
       name: cert.provider,
     },
-    url: cert.professionalCertificate.credentialUrl || `https://webjothishanalyst.site/certificates/${cert.slug}`,
-    image: cert.professionalCertificate.image ? `https://webjothishanalyst.site${cert.professionalCertificate.image}` : undefined,
+    url: cert.professionalCertificate.credentialUrl || `https://www.webjothishanalyst.site/certificates/${cert.slug}`,
+    image: cert.professionalCertificate.image ? `https://www.webjothishanalyst.site${cert.professionalCertificate.image}` : undefined,
   };
 
   const breadcrumbLd = {
@@ -70,19 +75,19 @@ export default async function CertificatePage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://webjothishanalyst.site/"
+        item: "https://www.webjothishanalyst.site/"
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Certificates",
-        item: "https://webjothishanalyst.site/#about"
+        item: "https://www.webjothishanalyst.site/#about"
       },
       {
         "@type": "ListItem",
         position: 3,
         name: cert.title,
-        item: `https://webjothishanalyst.site/certificates/${cert.slug}`
+        item: `https://www.webjothishanalyst.site/certificates/${cert.slug}`
       }
     ]
   };

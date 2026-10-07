@@ -210,6 +210,10 @@ export default function Projects() {
                           src={coverImage} 
                           alt={project.imageAlt || project.title}
                           fill
+                          sizes="(max-width: 768px) 92vw, 720px"
+                          priority={index === 0}
+                          loading={index < 3 ? "eager" : "lazy"}
+                          decoding="async"
                           className="object-cover"
                         />
                       </motion.div>

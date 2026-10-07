@@ -2,10 +2,10 @@ export default function GlobalJsonLd() {
   const personLd = {
     "@context": "https://schema.org",
     "@type": ["Person", "Organization"],
-    "@id": "https://webjothishanalyst.site/#person",
+    "@id": "https://www.webjothishanalyst.site/#person",
     name: "Jothish Gandham",
     alternateName: ["Gandham Jothish", "Gandham Jothish Guru Karthikeya Reddy", "Jothish", "Guru", "Karthikeya", "Reddy"],
-    url: "https://webjothishanalyst.site",
+    url: "https://www.webjothishanalyst.site",
     jobTitle: ["Cybersecurity Analyst", "SOC Analyst", "Detection Engineer"],
     worksFor: {
       "@type": "Organization",
@@ -42,23 +42,23 @@ export default function GlobalJsonLd() {
       "@type": "ContactPoint",
       contactType: "professional",
       email: "karthikeya10514@gmail.com",
-      url: "https://webjothishanalyst.site/#contact"
+      url: "https://www.webjothishanalyst.site/#contact"
     }
   };
 
   const websiteLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://webjothishanalyst.site/#website",
-    url: "https://webjothishanalyst.site",
+    "@id": "https://www.webjothishanalyst.site/#website",
+    url: "https://www.webjothishanalyst.site",
     name: "Jothish Gandham — Security Analyst Portfolio",
     description: "Security-focused portfolio of Jothish Gandham showcasing systems architecture, offensive and defensive security skills.",
     publisher: {
-      "@id": "https://webjothishanalyst.site/#person"
+      "@id": "https://www.webjothishanalyst.site/#person"
     },
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://webjothishanalyst.site/?q={search_term_string}",
+      target: "https://www.webjothishanalyst.site/?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };

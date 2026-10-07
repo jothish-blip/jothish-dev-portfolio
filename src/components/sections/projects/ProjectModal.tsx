@@ -191,8 +191,10 @@ export default function ProjectModal({ project, onClose }: Props) {
                   src={coverImage} 
                   alt={displayData.imageAlt || displayData.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 1200px"
                   className="object-cover transition-transform duration-700 hover:scale-105"
                   priority
+                  decoding="async"
                 />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-muted/30">

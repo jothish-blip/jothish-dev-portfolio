@@ -163,7 +163,7 @@ export default function IdentitySection() {
               {showResumeOptions && (
                 <div className="absolute top-full mt-2 left-0 w-[180px] border border-surface bg-background/95 backdrop-blur-sm shadow-xl z-50 rounded-sm overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                   <a
-                    href="/Resume"
+                    href="/resume"
                     className="identity-link block px-4 py-3 text-[9px] font-mono uppercase tracking-[0.24em] text-muted transition-colors"
                     onClick={() => setShowResumeOptions(false)}
                   >

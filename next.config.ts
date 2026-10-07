@@ -1,6 +1,46 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 31536000,
+  },
+  async redirects() {
+    return [
+      {
+        source: "/home",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/about",
+        destination: "/#about",
+        permanent: true,
+      },
+      {
+        source: "/projects",
+        destination: "/#projects",
+        permanent: true,
+      },
+      {
+        source: "/skills",
+        destination: "/#skills",
+        permanent: true,
+      },
+      {
+        source: "/terminal",
+        destination: "/#terminal",
+        permanent: true,
+      },
+      {
+        source: "/contact",
+        destination: "/#contact",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
@@ -71,7 +111,16 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/api/private/:path*",
+        source: "/mfa/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, nosnippet, noarchive",
+          },
+        ],
+      },
+      {
+        source: "/api/:path*",
         headers: [
           {
             key: "X-Robots-Tag",

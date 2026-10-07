@@ -228,7 +228,7 @@ export default function Terminal() {
         newArr[newArr.length - 1].output = "Opening Resume...";
         return newArr;
       });
-      router.push("/Resume?from=terminal");
+      router.push("/resume?from=terminal");
       return;
     }
 

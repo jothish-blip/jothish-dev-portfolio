@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useState } from "react";
 import { Wrench } from "lucide-react";
 
@@ -9,25 +8,23 @@ interface Props {
   className?: string;
 }
 
-export default function SkillLogo({ logo, icon: Icon, size = 32, className = "" }: Props) {
+export default function SkillLogo({ logo, icon: Icon, size = 16, className = "" }: Props) {
   const [imgError, setImgError] = useState(false);
 
   // If a valid image path is provided
   if (logo && !imgError) {
     return (
-      <div 
-        className={`relative flex items-center justify-center shrink-0 ${className}`} 
+      <img
+        src={logo}
+        alt=""
+        width={size}
+        height={size}
+        loading="eager"
+        decoding="async"
+        className={`shrink-0 object-contain ${className}`}
         style={{ width: size, height: size }}
-      >
-        <Image
-          src={logo}
-          alt="Skill logo"
-          fill
-          sizes={`${size}px`}
-          className="object-contain"
-          onError={() => setImgError(true)}
-        />
-      </div>
+        onError={() => setImgError(true)}
+      />
     );
   }
 

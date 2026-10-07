@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { createAdminClient } from '@/utils/supabase/server';
+import { createAdminClient, isSupabaseConfigured } from '@/utils/supabase/server';
 import { v4 as uuidv4 } from 'uuid';
 import { cookies, headers } from 'next/headers';
 import { findActiveVisitorSession, createVisitorSession, updateVisitorSession } from '@/lib/session-service';
@@ -90,6 +90,12 @@ export async function POST(request: Request) {
       sessionId = uuidv4();
       // Session cookie (no maxAge), it expires when browser closes, but backend tracks actual 30 min idle time
       newCookies.push({ name: 'pf_sid', value: sessionId, options: { path: '/', secure: process.env.NODE_ENV === 'production', sameSite: 'lax' as const, httpOnly: false } }); 
+    }
+
+    if (!isSupabaseConfigured()) {
+      const response = NextResponse.json({ success: true, vid: visitorId, sid: sessionId, mocked: true });
+      newCookies.forEach(c => response.cookies.set(c.name, c.value, c.options as any));
+      return response;
     }
 
     const supabase = await createAdminClient();
