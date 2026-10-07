@@ -25,6 +25,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/projects/:id(\\d{2})",
+        destination: "/?project=:id#projects",
+        permanent: true,
+      },
+      {
         source: "/skills",
         destination: "/#skills",
         permanent: true,
